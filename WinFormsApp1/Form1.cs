@@ -4,7 +4,7 @@ namespace WinFormsApp1
     {
         private readonly List<Point> vertices = [];
         private Point? pointToCheck = null;
-        private int vertexCount = 0;  
+        private int vertexCount = 0;    // So we can print the number
 
         public Form1()
         {
@@ -17,24 +17,21 @@ namespace WinFormsApp1
         {
             if (e.Button == MouseButtons.Left)
             {
-                // Check if the new vertex maintains convexity
                 if (IsConvex(vertices, new Point(e.X, e.Y)))
                 {
-                    // Add the new vertex
-                    vertices.Add(new Point(e.X, e.Y));
-                    vertexCount++;  // Increment vertex count
-                    Invalidate();  // Redraw the form
+                    vertices.Add(new Point(e.X, e.Y));  //  Add new vertex on left click
+                    vertexCount++; 
+                    Invalidate();  
                 }
                 else
                 {
                     MessageBox.Show("Cannot add this vertex; it would make the polygon concave.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else if (e.Button == MouseButtons.Right)
-            {
-                // Set the point to check on right-click
+            else if (e.Button == MouseButtons.Right)    //  On right click, add a dot to check 
+            {      
                 pointToCheck = new Point(e.X, e.Y);
-                Invalidate();  // Redraw the form
+                Invalidate();  
             }
         }
 
@@ -42,7 +39,6 @@ namespace WinFormsApp1
         {
             Graphics g = e.Graphics;
 
-            // Draw lines between consecutive vertices
             if (vertices.Count > 1)
             {
                 Pen linePen = new(Color.Black, 2);
@@ -51,17 +47,15 @@ namespace WinFormsApp1
                     g.DrawLine(linePen, vertices[i - 1], vertices[i]);
                 }
 
-                // Optionally close the polygon
-                if (vertices.Count > 2)
+                if (vertices.Count > 2)     //  Add the newest vertex from the last one
                 {
                     g.DrawLine(linePen, vertices[^1], vertices[0]);
                 }
             }
 
-            // Draw vertices with labels
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < vertices.Count; i++)    //  Add letter for new vertex
             {
-                string vertexLabel = GetVertexLabel(i);
+                string vertexLabel = GetVertexLabel(i); 
                 Brush vertexBrush = Brushes.Blue;
                 Font labelFont = new("Arial", 12, FontStyle.Bold);
 
@@ -81,7 +75,7 @@ namespace WinFormsApp1
                 Font labelFont = new("Arial", 12, FontStyle.Bold);
                 g.DrawString(pointLabel, labelFont, Brushes.Red, pointToCheck.Value.X + 5, pointToCheck.Value.Y - 15);
 
-                // Check if the point is inside the polygon
+                
                 if (vertices.Count > 2)
                 {
                     bool isInside = IsPointInPolygon(vertices, pointToCheck.Value.X, pointToCheck.Value.Y);
@@ -90,7 +84,6 @@ namespace WinFormsApp1
                 }
             }
 
-            // Display number of vertices
             string vertexCountText = $"Number of vertices: {vertexCount}";
             g.DrawString(vertexCountText, new Font("Arial", 12), Brushes.Black, new Point(10, 30));
         }
@@ -113,17 +106,16 @@ namespace WinFormsApp1
 
                 double angle = CalculateAngle(p1, p2, p3);
 
-                if (angle >= 180) // Check if angle is >= 180 degrees
+                if (angle >= 180) 
                 {
-                    return false; // Not convex
+                    return false; 
                 }
             }
 
-            return true; // Convex
+            return true; 
         }
 
         
-
         private static double CalculateAngle(Point p1, Point p2, Point p3)
         {
             double angle1 = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
