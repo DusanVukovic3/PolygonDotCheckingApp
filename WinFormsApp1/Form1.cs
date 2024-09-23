@@ -7,7 +7,7 @@ namespace WinFormsApp1
         private int vertexCount = 0;  // Track the number of vertices
 
         public Form1()
-        {
+        {//ksdkasdksdkdk
             InitializeComponent();
             Paint += new PaintEventHandler(Form1_Paint);
             MouseClick += new MouseEventHandler(Form1_MouseClick);
