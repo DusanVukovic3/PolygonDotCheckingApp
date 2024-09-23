@@ -116,7 +116,7 @@ namespace WinFormsApp1
         }
 
         
-        private static double CalculateAngle(Point p1, Point p2, Point p3)
+        private static double CalculateAngle(Point p1, Point p2, Point p3)  
         {
             double angle1 = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
             double angle2 = Math.Atan2(p3.Y - p2.Y, p3.X - p2.X);
@@ -124,10 +124,10 @@ namespace WinFormsApp1
 
             if (angle < 0)
             {
-                angle += 2 * Math.PI; // Normalize the angle
+                angle += 2 * Math.PI; //    Atan can give negative result sometime, so normalize angle -> 0 - 2pi
             }
 
-            return angle * (180 / Math.PI); // Convert radians to degrees
+            return angle * (180 / Math.PI); // 0 - 2pi --> 0° - 360°
         }
 
 
