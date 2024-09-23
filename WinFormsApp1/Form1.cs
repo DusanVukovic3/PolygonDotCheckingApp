@@ -4,10 +4,10 @@ namespace WinFormsApp1
     {
         private readonly List<Point> vertices = [];
         private Point? pointToCheck = null;
-        private int vertexCount = 0;  // Track the number of vertices
+        private int vertexCount = 0;  
 
         public Form1()
-        {//ksdkasdksdkdk
+        {
             InitializeComponent();
             Paint += new PaintEventHandler(Form1_Paint);
             MouseClick += new MouseEventHandler(Form1_MouseClick);
@@ -96,7 +96,7 @@ namespace WinFormsApp1
         }
 
 
-        private static bool IsConvex(List<Point> polygon, Point newVertex)  //Check if the polygon is convex by measuring angle
+        private static bool IsConvex(List<Point> polygon, Point newVertex)  //  Polygon is convex if all the angles < 180 degrees, atleast 3 vertices, every diagonal is inside the polygon
         {
             int count = polygon.Count;
 
@@ -141,15 +141,14 @@ namespace WinFormsApp1
 
         private static string GetVertexLabel(int index)
         {
-            int letterIndex = index % 26;   // Alphabet 26 letters
+            int letterIndex = index % 26;   // Alphabet 26 letters, after we run out of letters, start adding number to each letter (A2, B2, etc...)
             int numberIndex = index / 26;
             char label = (char)('A' + letterIndex);
-            return numberIndex > 0 ? $"{label}{numberIndex + 1}" : label.ToString(); // Start counting from 1
+            return numberIndex > 0 ? $"{label}{numberIndex + 1}" : label.ToString(); 
         }
 
 
-        // Ray-casting algorithm to check if a point is in the polygon
-        private static bool IsPointInPolygon(List<Point> polygon, int px, int py)
+        private static bool IsPointInPolygon(List<Point> polygon, int px, int py)   // Ray-casting algorithm to check if a point is in the polygon
         {
             bool inside = false;
             int count = polygon.Count;
