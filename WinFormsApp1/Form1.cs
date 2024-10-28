@@ -56,7 +56,7 @@ namespace WinFormsApp1
 
                 if (vertices.Count > 2)     //  If there are 3 or more vertices, connect the last added one to the first one (close the shape)
                 {
-                    g.DrawLine(linePen, vertices[^1], vertices[0]);
+                    g.DrawLine(linePen, vertices[^1], vertices[0]); //  Last and first vertex added
                 }
             }
 
@@ -67,14 +67,14 @@ namespace WinFormsApp1
                 Font labelFont = new("Arial", 12, FontStyle.Bold);
 
                 g.FillEllipse(Brushes.Blue, vertices[i].X - 3, vertices[i].Y - 3, 6, 6);
-                g.DrawString(vertexLabel, labelFont, vertexBrush, vertices[i].X + 5, vertices[i].Y - 15);
+                g.DrawString(vertexLabel, labelFont, vertexBrush, vertices[i].X + 5, vertices[i].Y - 15 );
             }
 
 
             if (pointToCheck.HasValue)  //  Draw point in red which needs checking and add the next available alphabet letter
             {
                 Brush pointBrush = Brushes.Red;
-                g.FillEllipse(pointBrush, pointToCheck.Value.X - 3, pointToCheck.Value.Y - 3, 6, 6);
+                g.FillEllipse(pointBrush, pointToCheck.Value.X - 3, pointToCheck.Value.Y - 3, 6, 6);    //  6, 6 - width, height of ellipse, or red vertex
 
                 string pointLabel = GetVertexLabel(vertexCount);
                 Font labelFont = new("Arial", 12, FontStyle.Bold);
@@ -107,7 +107,7 @@ namespace WinFormsApp1
             for (int i = 0; i < count; i++)
             {
                 Point p1 = tempPolygon[i];
-                Point p2 = tempPolygon[(i + 1) % (count + 1)];
+                Point p2 = tempPolygon[(i + 1) % (count + 1)];  //  in range [0, count], we dont get IndexOutOfRange exception
                 Point p3 = tempPolygon[(i + 2) % (count + 1)];
 
                 double skalar = CalculateVektorskiProizvod(p1, p2, p3);
@@ -138,10 +138,10 @@ namespace WinFormsApp1
 
         private static string GetVertexLabel(int index)
         {
-            int letterIndex = index % 26;   // Add each letter of the alphabet to the vertex
-            int numberIndex = index / 26;
-            char label = (char)('A' + letterIndex); //  A2, B2, etc...
-            return numberIndex > 0 ? $"{label}{numberIndex + 1}" : label.ToString();    // index = 26 -> A2
+            int letterIndex = index % 26;   // 0 - 25 (all letters), we wrap around after we reach Z
+            int numberIndex = index / 26;   // number of times we finished the whole alphabet
+            char label = (char)('A' + letterIndex); //  A + module = which letter currently is
+            return numberIndex > 0 ? $"{label}{numberIndex + 1}" : label.ToString();    // if we finished the whole alphabet, put number on how many times we finished whole alphabet on the label
         }
 
 
@@ -150,7 +150,7 @@ namespace WinFormsApp1
             if (vertexCount < 3) return;    
 
             Point center = CalculateCenter(vertices);
-            double radius = Distance(center, vertices[0]);  //  Distance from center to the vertex (poluprecnik opisanog kruga)
+            double radius = Distance(center, vertices[0]);  //  Distance from center to the first vertex (poluprecnik opisanog kruga)
 
             List<Point> regularPolygon = [];    //  New polygon where all the regular vertices are stored
             for (int i = 0; i < vertexCount; i++)
